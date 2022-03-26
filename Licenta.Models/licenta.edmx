@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="licentaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Description">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Steps" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Indications" Type="nvarchar(max)" />
+          <Property Name="Equipment" Type="nvarchar(max)" />
+          <Property Name="Observations" Type="nvarchar(max)" />
+          <Property Name="TrailId" Type="int" Nullable="false" />
+          <Property Name="ShortDescription" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Difficulty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="Stars" Type="float" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrailDifficulty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrailId" Type="int" Nullable="false" />
+          <Property Name="DifficultyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrailReview">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrailId" Type="int" Nullable="false" />
+          <Property Name="ReviewId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ShortDescription" Type="nvarchar(max)" />
+          <Property Name="Location" Type="nvarchar" MaxLength="255" />
+          <Property Name="Distance" Type="nvarchar" MaxLength="255" />
+          <Property Name="Time" Type="nvarchar" MaxLength="255" />
+          <Property Name="Mark" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Review_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailDescription_Description">
+          <End Role="Trails" Type="Self.Trails" Multiplicity="1" />
+          <End Role="Description" Type="Self.Description" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Description">
+              <PropertyRef Name="TrailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailDifficulty_Review">
+          <End Role="Difficulty" Type="Self.Difficulty" Multiplicity="1" />
+          <End Role="TrailDifficulty" Type="Self.TrailDifficulty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Difficulty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailDifficulty">
+              <PropertyRef Name="DifficultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailDifficulty_Trail">
+          <End Role="Trails" Type="Self.Trails" Multiplicity="1" />
+          <End Role="TrailDifficulty" Type="Self.TrailDifficulty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailDifficulty">
+              <PropertyRef Name="TrailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailReview_Review">
+          <End Role="Review" Type="Self.Review" Multiplicity="1" />
+          <End Role="TrailReview" Type="Self.TrailReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailReview">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailReview_Trail">
+          <End Role="Trails" Type="Self.Trails" Multiplicity="1" />
+          <End Role="TrailReview" Type="Self.TrailReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailReview">
+              <PropertyRef Name="TrailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="licentaModelStoreContainer">
+          <EntitySet Name="Description" EntityType="Self.Description" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Difficulty" EntityType="Self.Difficulty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrailDifficulty" EntityType="Self.TrailDifficulty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrailReview" EntityType="Self.TrailReview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trails" EntityType="Self.Trails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Review_Users" Association="Self.FK_Review_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailDescription_Description" Association="Self.FK_TrailDescription_Description">
+            <End Role="Trails" EntitySet="Trails" />
+            <End Role="Description" EntitySet="Description" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailDifficulty_Review" Association="Self.FK_TrailDifficulty_Review">
+            <End Role="Difficulty" EntitySet="Difficulty" />
+            <End Role="TrailDifficulty" EntitySet="TrailDifficulty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailDifficulty_Trail" Association="Self.FK_TrailDifficulty_Trail">
+            <End Role="Trails" EntitySet="Trails" />
+            <End Role="TrailDifficulty" EntitySet="TrailDifficulty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailReview_Review" Association="Self.FK_TrailReview_Review">
+            <End Role="Review" EntitySet="Review" />
+            <End Role="TrailReview" EntitySet="TrailReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailReview_Trail" Association="Self.FK_TrailReview_Trail">
+            <End Role="Trails" EntitySet="Trails" />
+            <End Role="TrailReview" EntitySet="TrailReview" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="licentaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Description">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Steps" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Indications" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Equipment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Observations" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrailId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Trail" Relationship="Self.FK_TrailDescription_Description" FromRole="Description" ToRole="Trails" />
+          <Property Name="ShortDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Difficulty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TrailDifficulties" Relationship="Self.FK_TrailDifficulty_Review" FromRole="Difficulty" ToRole="TrailDifficulty" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Stars" Type="Double" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Review_Users" FromRole="Review" ToRole="Users" />
+          <NavigationProperty Name="TrailReviews" Relationship="Self.FK_TrailReview_Review" FromRole="Review" ToRole="TrailReview" />
+        </EntityType>
+        <EntityType Name="TrailDifficulty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrailId" Type="Int32" Nullable="false" />
+          <Property Name="DifficultyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Difficulty" Relationship="Self.FK_TrailDifficulty_Review" FromRole="TrailDifficulty" ToRole="Difficulty" />
+          <NavigationProperty Name="Trail" Relationship="Self.FK_TrailDifficulty_Trail" FromRole="TrailDifficulty" ToRole="Trails" />
+        </EntityType>
+        <EntityType Name="TrailReview">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrailId" Type="Int32" Nullable="false" />
+          <Property Name="ReviewId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Review" Relationship="Self.FK_TrailReview_Review" FromRole="TrailReview" ToRole="Review" />
+          <NavigationProperty Name="Trail" Relationship="Self.FK_TrailReview_Trail" FromRole="TrailReview" ToRole="Trails" />
+        </EntityType>
+        <EntityType Name="Trail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Distance" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Mark" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Descriptions" Relationship="Self.FK_TrailDescription_Description" FromRole="Trails" ToRole="Description" />
+          <NavigationProperty Name="TrailDifficulties" Relationship="Self.FK_TrailDifficulty_Trail" FromRole="Trails" ToRole="TrailDifficulty" />
+          <NavigationProperty Name="TrailReviews" Relationship="Self.FK_TrailReview_Trail" FromRole="Trails" ToRole="TrailReview" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_Users" FromRole="Users" ToRole="Review" />
+        </EntityType>
+        <Association Name="FK_TrailDescription_Description">
+          <End Role="Trails" Type="Self.Trail" Multiplicity="1" />
+          <End Role="Description" Type="Self.Description" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Description">
+              <PropertyRef Name="TrailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailDifficulty_Review">
+          <End Role="Difficulty" Type="Self.Difficulty" Multiplicity="1" />
+          <End Role="TrailDifficulty" Type="Self.TrailDifficulty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Difficulty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailDifficulty">
+              <PropertyRef Name="DifficultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailReview_Review">
+          <End Role="Review" Type="Self.Review" Multiplicity="1" />
+          <End Role="TrailReview" Type="Self.TrailReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailReview">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailDifficulty_Trail">
+          <End Role="Trails" Type="Self.Trail" Multiplicity="1" />
+          <End Role="TrailDifficulty" Type="Self.TrailDifficulty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailDifficulty">
+              <PropertyRef Name="TrailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrailReview_Trail">
+          <End Role="Trails" Type="Self.Trail" Multiplicity="1" />
+          <End Role="TrailReview" Type="Self.TrailReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrailReview">
+              <PropertyRef Name="TrailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="licenta" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Descriptions" EntityType="Self.Description" />
+          <EntitySet Name="Difficulties" EntityType="Self.Difficulty" />
+          <EntitySet Name="Reviews" EntityType="Self.Review" />
+          <EntitySet Name="TrailDifficulties" EntityType="Self.TrailDifficulty" />
+          <EntitySet Name="TrailReviews" EntityType="Self.TrailReview" />
+          <EntitySet Name="Trails" EntityType="Self.Trail" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_TrailDescription_Description" Association="Self.FK_TrailDescription_Description">
+            <End Role="Trails" EntitySet="Trails" />
+            <End Role="Description" EntitySet="Descriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailDifficulty_Review" Association="Self.FK_TrailDifficulty_Review">
+            <End Role="Difficulty" EntitySet="Difficulties" />
+            <End Role="TrailDifficulty" EntitySet="TrailDifficulties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Users" Association="Self.FK_Review_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailReview_Review" Association="Self.FK_TrailReview_Review">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="TrailReview" EntitySet="TrailReviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailDifficulty_Trail" Association="Self.FK_TrailDifficulty_Trail">
+            <End Role="Trails" EntitySet="Trails" />
+            <End Role="TrailDifficulty" EntitySet="TrailDifficulties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrailReview_Trail" Association="Self.FK_TrailReview_Trail">
+            <End Role="Trails" EntitySet="Trails" />
+            <End Role="TrailReview" EntitySet="TrailReviews" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="licentaModelStoreContainer" CdmEntityContainer="licenta">
+          <EntitySetMapping Name="Descriptions">
+            <EntityTypeMapping TypeName="licentaModel.Description">
+              <MappingFragment StoreEntitySet="Description">
+                <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Steps" ColumnName="Steps" />
+                <ScalarProperty Name="Indications" ColumnName="Indications" />
+                <ScalarProperty Name="Equipment" ColumnName="Equipment" />
+                <ScalarProperty Name="Observations" ColumnName="Observations" />
+                <ScalarProperty Name="TrailId" ColumnName="TrailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Difficulties">
+            <EntityTypeMapping TypeName="licentaModel.Difficulty">
+              <MappingFragment StoreEntitySet="Difficulty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="licentaModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Stars" ColumnName="Stars" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrailDifficulties">
+            <EntityTypeMapping TypeName="licentaModel.TrailDifficulty">
+              <MappingFragment StoreEntitySet="TrailDifficulty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TrailId" ColumnName="TrailId" />
+                <ScalarProperty Name="DifficultyId" ColumnName="DifficultyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrailReviews">
+            <EntityTypeMapping TypeName="licentaModel.TrailReview">
+              <MappingFragment StoreEntitySet="TrailReview">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TrailId" ColumnName="TrailId" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trails">
+            <EntityTypeMapping TypeName="licentaModel.Trail">
+              <MappingFragment StoreEntitySet="Trails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShortDescription" ColumnName="ShortDescription" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Distance" ColumnName="Distance" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Mark" ColumnName="Mark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="licentaModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
