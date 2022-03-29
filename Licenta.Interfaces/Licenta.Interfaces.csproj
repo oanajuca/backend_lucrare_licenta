@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ILogger.cs" />
     <Compile Include="IMapper.cs" />
+    <Compile Include="IPasswordManager.cs" />
     <Compile Include="IRepository.cs" />
   </ItemGroup>
   <ItemGroup>

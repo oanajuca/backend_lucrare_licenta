@@ -15,13 +15,17 @@ namespace Licenta.Interfaces
         IEnumerable<DifficultyEntity> GetDifficulty();
         IEnumerable<ReviewEntity> GetReview();
         IEnumerable<UserEntity> GetUserRev();
+        IEnumerable<TouristGuideEntity> GetGuide();
         UserEntity GetUser(string username, string password);
+        UserDto GetUserObject(string username, string password);
+        void UpdateUserPassword(UserDto user);
         TrailsEntity GetTrail(int id);
         DescriptionEntity GetDescription(int id);
         List<DifficultyEntity> GetTrailDifficulty(int difficultyId);
         List<DescriptionEntity> GetTrailDescription(int descriptionId);
         List<ReviewEntity> GetTrailReview(int trailId);
         List<ReviewEntity> GetUserReview(int reviewId);
+        List<TouristGuideEntity> GetTrailTouristGuide(int trailId);
         MessageDto CreateUser(string firstname,string lastname,string username, string email, string role, string password);
         //MessageDto InsertReview(string review);
         // List<ReviewEntity> GetReviewUser(int userId);

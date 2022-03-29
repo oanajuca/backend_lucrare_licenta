@@ -47,6 +47,7 @@
     <Compile Include="Implementations\DatabaseRepository.cs" />
     <Compile Include="Implementations\EntitiesMapper.cs" />
     <Compile Include="Implementations\FileLogger.cs" />
+    <Compile Include="Implementations\PasswordManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Licenta.Infrastructure\Licenta.Infrastructure.csproj">

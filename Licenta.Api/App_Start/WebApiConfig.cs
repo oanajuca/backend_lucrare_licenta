@@ -18,6 +18,7 @@ namespace Licenta.Api
             container.RegisterType<IMapper, EntitiesMapper>();
             container.RegisterType<IRepository, DatabaseRepository>();
             container.RegisterType<ILogger, FileLogger>();
+            container.RegisterType<IPasswordManager, PasswordManager>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
 

@@ -18,5 +18,6 @@ namespace Licenta.Models.Entities
         public List<DifficultyEntity> TrailDifficulty { get; set; }
         public List<DescriptionEntity> Description { get; set; }
         public List<ReviewEntity> TrailReview { get; set; }
+        public List<TouristGuideEntity> TrailTouristGuide { get; set; }
     }
 }

@@ -36,7 +36,22 @@ namespace Licenta.Services.Implementations
             }
             return users;
         }
-        
+        public UserDto ConvertToDto(User usersDao)
+        {
+            var user = new UserDto
+            {
+                Id = usersDao.Id,
+                FirstName=usersDao.FirstName,
+                LastName= usersDao.LastName,
+                Email = usersDao.Email,
+                Username = usersDao.Username,
+                Role = usersDao.Role,
+                Password = usersDao.Password
+            };
+
+            return user;
+        }
+
         public IEnumerable<TrailsEntity> Convert(IEnumerable<Trail> trailDao)
         {
             {
@@ -59,12 +74,44 @@ namespace Licenta.Services.Implementations
                 Name = trailDao.Name,
                 ShortDescription = trailDao.ShortDescription,
                 Location = trailDao.Location,
-               Distance = trailDao.Distance,
+                Distance = trailDao.Distance,
                 Time = trailDao.Time,
                 Mark = trailDao.Mark
             };
 
             return trail;
+        }
+        public IEnumerable<TouristGuideEntity> Convert(IEnumerable<TouristGuide> guideDao)
+        {
+            {
+                var guides = new List<TouristGuideEntity>();
+
+                foreach (var item in guideDao)
+                {
+                    guides.Add(Convert(item));
+                }
+
+                return guides;
+            }
+
+        }
+        public TouristGuideEntity Convert(TouristGuide guideDao)
+        {
+            var guide = new TouristGuideEntity
+            {
+                Id=guideDao.Id,
+                Discover=guideDao.Discover,
+                Deviation=guideDao.Deviation,
+                Camping=guideDao.Camping,
+                Fire=guideDao.Fire,
+                Garbage=guideDao.Garbage,
+                Environment=guideDao.Environment,
+                Noise=guideDao.Noise,
+                Promote=guideDao.Promote,
+                Rules=guideDao.Rules,
+            };
+
+            return guide;
         }
 
         public IEnumerable<DifficultyEntity> Convert(IEnumerable<Difficulty> difficultyDao)

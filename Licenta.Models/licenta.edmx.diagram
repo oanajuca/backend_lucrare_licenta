@@ -18,6 +18,10 @@
         <AssociationConnector Association="licentaModel.FK_TrailReview_Review" ManuallyRouted="false" />
         <AssociationConnector Association="licentaModel.FK_TrailDifficulty_Trail" ManuallyRouted="false" />
         <AssociationConnector Association="licentaModel.FK_TrailReview_Trail" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="licentaModel.TouristGuide" Width="1.5" PointX="5.375" PointY="1" />
+        <EntityTypeShape EntityType="licentaModel.TouristGuideTrail" Width="1.5" PointX="7.625" PointY="1.625" />
+        <AssociationConnector Association="licentaModel.FK_TouristGuideTrails_TouristGuide" />
+        <AssociationConnector Association="licentaModel.FK_TrailTouristGuide_Trail" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

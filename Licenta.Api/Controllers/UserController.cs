@@ -17,12 +17,16 @@ namespace Licenta.Api.Controllers
     public class UserController : ApiController
     {
         private readonly IRepository _repository;
+
         private readonly IMapper _mapper;
 
-        public UserController(IRepository repository, IMapper mapper)
+        private readonly IPasswordManager _passwordManager;
+
+        public UserController(IRepository repository, IMapper mapper, IPasswordManager passwordManager)
         {
             _repository = repository;
             _mapper = mapper;
+            _passwordManager = passwordManager;
         }
 
 
@@ -67,31 +71,40 @@ namespace Licenta.Api.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, userreview);
         }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpPost]
+        [Route("changePassword")]
+        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            var response = _passwordManager.ChangePassword(username, oldPassword, newPassword);
 
-      //  [EnableCors(origins: "*", headers: "*", methods: "*")]
-       // [HttpGet]
-      //  [Route("all")]
-      //  public HttpResponseMessage GetUserRev()
-     //   {
-     //       var users = _repository.GetUserRev();
-       //     foreach (var item in users)
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        //  [EnableCors(origins: "*", headers: "*", methods: "*")]
+        // [HttpGet]
+        //  [Route("all")]
+        //  public HttpResponseMessage GetUserRev()
+        //   {
+        //       var users = _repository.GetUserRev();
+        //     foreach (var item in users)
         //    {
-            //    item.Review = _repository.GetReviewUser(Decimal.ToInt32(item.Id));
-         //   }
-         //   return Request.CreateResponse(HttpStatusCode.OK, users);
-       // }
+        //    item.Review = _repository.GetReviewUser(Decimal.ToInt32(item.Id));
+        //   }
+        //   return Request.CreateResponse(HttpStatusCode.OK, users);
+        // }
 
-      //  [EnableCors(origins: "*", headers: "*", methods: "*")]
-       // [HttpGet]
-       // [Route("{id}")]
-      //  public HttpResponseMessage GetUserRev(int id)
-      //  {
-      //      var review = _repository.GetUserRev(id);
+        //  [EnableCors(origins: "*", headers: "*", methods: "*")]
+        // [HttpGet]
+        // [Route("{id}")]
+        //  public HttpResponseMessage GetUserRev(int id)
+        //  {
+        //      var review = _repository.GetUserRev(id);
 
         //    review.Review = _repository.GetReviewUser(id);
 
-       //     return Request.CreateResponse(HttpStatusCode.OK, review);
-       // }
+        //     return Request.CreateResponse(HttpStatusCode.OK, review);
+        // }
     }
 }
 

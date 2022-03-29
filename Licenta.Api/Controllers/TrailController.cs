@@ -35,6 +35,7 @@ namespace Licenta.Api.Controllers
                     item.TrailDifficulty = _repository.GetTrailDifficulty(Decimal.ToInt32(item.Id));
                     item.TrailReview = _repository.GetTrailReview(Decimal.ToInt32(item.Id));
                     item.Description = _repository.GetTrailDescription(Decimal.ToInt32(item.Id));
+                    item.TrailTouristGuide = _repository.GetTrailTouristGuide(Decimal.ToInt32(item.Id));
                 }
                 return Request.CreateResponse(HttpStatusCode.OK, trails);
             }
@@ -48,6 +49,7 @@ namespace Licenta.Api.Controllers
             trails.TrailDifficulty = _repository.GetTrailDifficulty(id);
             trails.TrailReview = _repository.GetTrailReview(id);
             trails.Description = _repository.GetTrailDescription(id);
+            trails.TrailTouristGuide= _repository.GetTrailTouristGuide(id);
 
             return Request.CreateResponse(HttpStatusCode.OK, trails);
             }

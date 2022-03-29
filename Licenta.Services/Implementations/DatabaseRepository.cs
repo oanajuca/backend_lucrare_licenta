@@ -64,6 +64,17 @@ namespace Licenta.Services.Implementations
                 return review;
             }
         }
+        public IEnumerable<TouristGuideEntity> GetGuide()
+        {
+            using (var licentaDataEntities = new licenta())
+            {
+                var guideDao = licentaDataEntities.TouristGuides;
+
+                var guide = _mapper.Convert(guideDao);
+
+                return guide;
+            }
+        }
         public IEnumerable<UserEntity> GetUserRev()
         {
             using (var licentaDataEntities = new licenta())
@@ -190,6 +201,33 @@ namespace Licenta.Services.Implementations
                 return diff;
             }
         }
+        public List<TouristGuideEntity> GetTrailTouristGuide(int trailId)
+        {
+            var guides = new List<TouristGuideEntity>();
+
+            using (var licentaDataEntities = new licenta())
+            {
+                var diff = licentaDataEntities.TouristGuideTrails
+                    .Join(licentaDataEntities.TouristGuides, u => u.TouristGuideId, t => t.Id, (u, t) => new { u, t })
+                    .Join(licentaDataEntities.Trails, ct => ct.u.TrailId, c => c.Id, (ct, c) => new { ct, c })
+                    .Where(a => a.ct.u.TrailId == trailId)
+                    .Select(a => new TouristGuideEntity
+                    {
+                      Id=a.ct.u.TouristGuideId,
+                      Camping= a.ct.u.TouristGuide.Camping,
+                      Deviation= a.ct.u.TouristGuide.Deviation,
+                      Environment= a.ct.u.TouristGuide.Environment,
+                      Discover= a.ct.u.TouristGuide.Discover,
+                      Fire= a.ct.u.TouristGuide.Fire,   
+                      Garbage= a.ct.u.TouristGuide.Garbage,
+                      Noise= a.ct.u.TouristGuide.Noise,
+                      Promote= a.ct.u.TouristGuide.Promote,
+                      Rules= a.ct.u.TouristGuide.Rules,
+                    }).ToList();
+
+                return diff;
+            }
+        }
         public List<ReviewEntity> GetTrailReview(int trailId)
         {
             var difficulty = new List<ReviewEntity>();
@@ -306,37 +344,64 @@ namespace Licenta.Services.Implementations
                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
             }
         }
-
-       /* public MessageDto InsertReview(string id, string stars, string comment)
+        public UserDto GetUserObject(string username, string password)
         {
-            try
+            using (var licentaDataEntities = new licenta())
             {
-                using (var licentaDataEntities = new licenta())
-                {
-                        var rev = new Review
-                        {
-                          Id = 
-                        };
+                var userDto = licentaDataEntities.Users.Where(a => a.Username == username).FirstOrDefault();
 
-                        licentaDataEntities.Reviews.Add(rev);
-                        licentaDataEntities.SaveChanges();
-                        return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Review inserted successfully." };
-                    
-                  
+                if (userDto != null)
+                {
+                    var user = _mapper.ConvertToDto(userDto);
+                    user.Password = Cryptography.Decrypt(userDto.Password);
+
+                    return user;
                 }
 
+                return null;
             }
-            catch (DbEntityValidationException ex)
+        }
+        public void UpdateUserPassword(UserDto user)
+        {
+            using (var licentaDataEntities = new licenta())
             {
-                HandleDbEntityValiddationException("InsertReview", ex);
-                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+                var userDao = licentaDataEntities.Users.FirstOrDefault(a => a.Username == user.Username);
+
+                userDao.Password = Cryptography.Encrypt(user.Password);
+
+                licentaDataEntities.SaveChanges();
             }
-            catch (Exception ex)
-            {
-                _logger.Error("InsertReview failed in DatabaseRepository.cs. Error: ", ex);
-                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
-            }
-        } */
+        }
+        /* public MessageDto InsertReview(string id, string stars, string comment)
+         {
+             try
+             {
+                 using (var licentaDataEntities = new licenta())
+                 {
+                         var rev = new Review
+                         {
+                           Id = 
+                         };
+
+                         licentaDataEntities.Reviews.Add(rev);
+                         licentaDataEntities.SaveChanges();
+                         return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Review inserted successfully." };
+
+
+                 }
+
+             }
+             catch (DbEntityValidationException ex)
+             {
+                 HandleDbEntityValiddationException("InsertReview", ex);
+                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+             }
+             catch (Exception ex)
+             {
+                 _logger.Error("InsertReview failed in DatabaseRepository.cs. Error: ", ex);
+                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+             }
+         } */
 
         private void HandleDbEntityValiddationException(string methodOfOcuring, DbEntityValidationException ex)
         {

@@ -71,9 +71,11 @@
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Dto\MessageDto.cs" />
+    <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Entities\DescriptionEntity.cs" />
     <Compile Include="Entities\DifficultyEntity.cs" />
     <Compile Include="Entities\ReviewEntity.cs" />
+    <Compile Include="Entities\TouristGuideEntity.cs" />
     <Compile Include="Entities\TrailsEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="licenta.Context.cs">
@@ -92,6 +94,12 @@
       <DependentUpon>licenta.edmx</DependentUpon>
     </Compile>
     <Compile Include="Review.cs">
+      <DependentUpon>licenta.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TouristGuide.cs">
+      <DependentUpon>licenta.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TouristGuideTrail.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Trail.cs">
