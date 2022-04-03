@@ -1,5 +1,6 @@
 ﻿using Licenta.Interfaces;
 using Licenta.Models.Dto;
+using Licenta.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,15 @@ namespace Licenta.Api.Controllers
             var guide = _repository.GetTrailTouristGuide(trailId);
 
             return Request.CreateResponse(HttpStatusCode.OK, guide);
+        }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpPost]
+        [Route("save/{id}")]
+        public HttpResponseMessage SaveTouristGuide(int id, [FromBody] TrailTouristGuideModel trailTouristGuideEntity)
+        {
+            var ghid = _repository.SaveTouristGuide(id, trailTouristGuideEntity);
+
+            return Request.CreateResponse(HttpStatusCode.OK, ghid);
         }
     }
 }

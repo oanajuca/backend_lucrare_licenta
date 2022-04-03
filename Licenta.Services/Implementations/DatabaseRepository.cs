@@ -1,5 +1,6 @@
 ﻿using Licenta.Interfaces;
 using Licenta.Models;
+using Licenta.Infrastructure.Wrappers;
 using Licenta.Models.Entities;
 using Licenta.Models.Dto;
 using System;
@@ -149,13 +150,13 @@ namespace Licenta.Services.Implementations
                     .Where(a => a.u.TrailId == descriptionId)
                     .Select(a => new DescriptionEntity
                     {
-                      Id = a.u.TrailId,
-                      ShortDescription= a.u.ShortDescription,
-                      Steps = a.u.Steps,
-                      Indications = a.u.Indications,
-                      Equipment = a.u.Equipment,
-                      Observations = a.u.Observations,
-                      TrailId = a.u.TrailId,
+                        Id = a.u.TrailId,
+                        ShortDescription = a.u.ShortDescription,
+                        Steps = a.u.Steps,
+                        Indications = a.u.Indications,
+                        Equipment = a.u.Equipment,
+                        Observations = a.u.Observations,
+                        TrailId = a.u.TrailId,
 
                     }).ToList();
 
@@ -171,10 +172,10 @@ namespace Licenta.Services.Implementations
                     .Where(a => a.p.UserId == reviewId)
                     .Select(a => new ReviewEntity
                     {
-                     Id=a.p.UserId,
-                     Comment = a.p.Comment,
-                     Stars = a.p.Stars,
-                     UserId = a.p.UserId,
+                        Id = a.p.UserId,
+                        Comment = a.p.Comment,
+                        Stars = a.p.Stars,
+                        UserId = a.p.UserId,
                     }).ToList();
 
                 return revi;
@@ -195,7 +196,7 @@ namespace Licenta.Services.Implementations
                     {
                         Id = a.ct.u.Difficulty.Id,
                         Description = a.ct.u.Difficulty.Description,
-                       
+
                     }).ToList();
 
                 return diff;
@@ -213,16 +214,16 @@ namespace Licenta.Services.Implementations
                     .Where(a => a.ct.u.TrailId == trailId)
                     .Select(a => new TouristGuideEntity
                     {
-                      Id=a.ct.u.TouristGuideId,
-                      Camping= a.ct.u.TouristGuide.Camping,
-                      Deviation= a.ct.u.TouristGuide.Deviation,
-                      Environment= a.ct.u.TouristGuide.Environment,
-                      Discover= a.ct.u.TouristGuide.Discover,
-                      Fire= a.ct.u.TouristGuide.Fire,   
-                      Garbage= a.ct.u.TouristGuide.Garbage,
-                      Noise= a.ct.u.TouristGuide.Noise,
-                      Promote= a.ct.u.TouristGuide.Promote,
-                      Rules= a.ct.u.TouristGuide.Rules,
+                        Id = a.ct.u.TouristGuideId,
+                        Camping = a.ct.u.TouristGuide.Camping,
+                        Deviation = a.ct.u.TouristGuide.Deviation,
+                        Environment = a.ct.u.TouristGuide.Environment,
+                        Discover = a.ct.u.TouristGuide.Discover,
+                        Fire = a.ct.u.TouristGuide.Fire,
+                        Garbage = a.ct.u.TouristGuide.Garbage,
+                        Noise = a.ct.u.TouristGuide.Noise,
+                        Promote = a.ct.u.TouristGuide.Promote,
+                        Rules = a.ct.u.TouristGuide.Rules,
                     }).ToList();
 
                 return diff;
@@ -249,25 +250,25 @@ namespace Licenta.Services.Implementations
                 return rev;
             }
         }
-       // public List<ReviewEntity> GetReviewUser(int reviewId)
-      //  {
-            
-              //  using (var licentaDataEntities = new licenta())
-             //   {
-               //     var urew = licentaDataEntities.Reviews
-                  //      .Join(licentaDataEntities.Users ,u => u.UserId, t => t.Id, (u, t) => new { u, t })
-                   //     .Where(a => a.u.UserId == reviewId)
-                    //    .Select(a => new ReviewEntity
-                    //    {
-                      //    Id=a.u.UserId,
-                      //    Stars=a.u.Stars,
-                     //     Comment=a.u.Comment,
-                     //     UserId = a.u.UserId,
-                     //   }).ToList();
+        public List<ReviewEntity> GetReviewUser(int reviewId)
+        {
 
-                //    return urew;
-              //  }
-       // }
+            using (var licentaDataEntities = new licenta())
+            {
+                var urew = licentaDataEntities.Reviews
+                    .Join(licentaDataEntities.Users, u => u.UserId, t => t.Id, (u, t) => new { u, t })
+                    .Where(a => a.u.UserId == reviewId)
+                    .Select(a => new ReviewEntity
+                    {
+                        Id = a.u.UserId,
+                        Stars = a.u.Stars,
+                        Comment = a.u.Comment,
+                        UserId = a.u.UserId,
+                    }).ToList();
+
+                return urew;
+            }
+        }
         public UserEntity GetUser(string username, string password)
         {
             using (var licentaDataEntities = new licenta())
@@ -318,7 +319,7 @@ namespace Licenta.Services.Implementations
                             LastName = lastname,
                             Username = username,
                             Email = email,
-                            Role=role,
+                            Role = role,
                             Password = Cryptography.Encrypt(password)
                         };
 
@@ -419,6 +420,141 @@ namespace Licenta.Services.Implementations
             //_logger.Error(sb.ToString(), ex);
         }
 
-        
+        public MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewModel)
+        {
+            try
+            {
+                using (var licentaDataEntities = new licenta())
+                {
+                    var trailDao = licentaDataEntities.Trails.Where(a => a.Id == trailId).FirstOrDefault();
+
+                    if (trailDao != null)
+                    {
+                        foreach (var descrip in trailOverviewModel.Descriptions)
+                        {
+                            var existingOverview = licentaDataEntities.Descriptions.Where(a => a.Id == descrip.Id).FirstOrDefault();
+
+
+                            if (existingOverview == null)
+                            {
+                                var newOverview = new Description
+                                {
+                                    ShortDescription = descrip.ShortDescription,
+                                    Steps = descrip.Steps,
+                                    Equipment = descrip.Equipment,
+                                    Indications = descrip.Indications,
+                                    Observations = descrip.Observations,
+
+                                };
+
+                                licentaDataEntities.Descriptions.Add(newOverview);
+                                licentaDataEntities.SaveChanges();
+                            }
+                            else if (existingOverview != null)
+                            {
+                                existingOverview.ShortDescription = descrip.ShortDescription;
+                                existingOverview.Steps = descrip.Steps;
+                                existingOverview.Equipment = descrip.Equipment;
+                                existingOverview.Indications = descrip.Indications;
+                                existingOverview.Observations = descrip.Observations;
+
+
+                                licentaDataEntities.SaveChanges();
+                            }
+                        }
+
+                        return new MessageDto { Category = Constants.Info, Description = "Details for trail: " + trailId + " were updated." };
+                    }
+                    else
+                    {
+                        return new MessageDto { Category = Constants.Warn, Description = "Trail ID specified does not exist. Id: " + trailId };
+                    }
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("SaveOverview", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("SaveOverview failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+        }
+        public MessageDto SaveTouristGuide(int trailId, TrailTouristGuideModel trailTouristGuideEntity)
+        {
+            try
+            {
+                using (var licentaDataEntities = new licenta())
+                {
+                    var trailDao = licentaDataEntities.Trails.Where(a => a.Id == trailId).FirstOrDefault();
+
+                    if (trailDao != null)
+                    {
+                        foreach (var guide in trailTouristGuideEntity.TouristGuides)
+                        {
+                            var existingGuide = licentaDataEntities.TouristGuides.Where(a => a.Id == guide.Id).FirstOrDefault();
+
+
+                            if (existingGuide == null)
+                            {
+                                var newGuide = new TouristGuide
+                                {
+                                    Deviation= guide.Deviation,
+                                    Camping= guide.Camping,
+                                    Discover= guide.Discover,
+                                    Environment= guide.Environment,
+                                    Fire= guide.Fire,
+                                    Garbage= guide.Garbage,
+                                    Noise= guide.Noise,
+                                    Promote= guide.Promote,
+                                    Rules= guide.Rules,
+
+
+                                };
+
+                                licentaDataEntities.TouristGuides.Add(newGuide);
+                                licentaDataEntities.SaveChanges();
+                            }
+                            else if (existingGuide != null)
+                            {
+                                existingGuide.Deviation = guide.Deviation;
+                                existingGuide.Camping = guide.Camping;
+                                existingGuide.Discover = guide.Discover;
+                                existingGuide.Environment = guide.Environment; 
+                                existingGuide.Fire = guide.Fire;
+                                existingGuide.Garbage = guide.Garbage;
+                                existingGuide.Noise = guide.Noise;
+                                existingGuide.Promote = guide.Promote;
+                                existingGuide.Rules = guide.Rules;
+
+
+                                licentaDataEntities.SaveChanges();
+                            }
+                        }
+
+                        return new MessageDto { Category = Constants.Info, Description = "Guides for trail: " + trailId + " were updated." };
+                    }
+                    else
+                    {
+                        return new MessageDto { Category = Constants.Warn, Description = "Trail ID specified does not exist. Id: " + trailId };
+                    }
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("SaveTouristGuide", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("SaveTouristGuide failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+        }
+
     }
+
 }
+

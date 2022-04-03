@@ -28,8 +28,10 @@ namespace Licenta.Interfaces
         List<TouristGuideEntity> GetTrailTouristGuide(int trailId);
         MessageDto CreateUser(string firstname,string lastname,string username, string email, string role, string password);
         //MessageDto InsertReview(string review);
-        // List<ReviewEntity> GetReviewUser(int userId);
-        // UserEntity GetUserRev(int id);
+         List<ReviewEntity> GetReviewUser(int userId);
+        UserEntity GetUserRev(int id);
+        MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewEntity);
+        MessageDto SaveTouristGuide(int trailId, TrailTouristGuideModel trailTouristGuideEntity);
     }
 }
 

@@ -14,7 +14,7 @@ namespace Licenta.Models.Entities
         public string Username { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
-       // public List<ReviewEntity> Review { get; set; }
+        public List<ReviewEntity> Review { get; set; }
 
     }
 }

@@ -81,30 +81,30 @@ namespace Licenta.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        //  [EnableCors(origins: "*", headers: "*", methods: "*")]
-        // [HttpGet]
-        //  [Route("all")]
-        //  public HttpResponseMessage GetUserRev()
-        //   {
-        //       var users = _repository.GetUserRev();
-        //     foreach (var item in users)
-        //    {
-        //    item.Review = _repository.GetReviewUser(Decimal.ToInt32(item.Id));
-        //   }
-        //   return Request.CreateResponse(HttpStatusCode.OK, users);
-        // }
+          [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet]
+         [Route("all")]
+         public HttpResponseMessage GetUserRev()
+           {
+              var users = _repository.GetUserRev();
+           foreach (var item in users)
+           {
+         item.Review = _repository.GetReviewUser(Decimal.ToInt32(item.Id));
+           }
+           return Request.CreateResponse(HttpStatusCode.OK, users);
+        }
 
-        //  [EnableCors(origins: "*", headers: "*", methods: "*")]
-        // [HttpGet]
-        // [Route("{id}")]
-        //  public HttpResponseMessage GetUserRev(int id)
-        //  {
-        //      var review = _repository.GetUserRev(id);
+          [EnableCors(origins: "*", headers: "*", methods: "*")]
+         [HttpGet]
+         [Route("{id}")]
+          public HttpResponseMessage GetUserRev(int id)
+          {
+            var review = _repository.GetUserRev(id);
 
-        //    review.Review = _repository.GetReviewUser(id);
+            review.Review = _repository.GetReviewUser(id);
 
-        //     return Request.CreateResponse(HttpStatusCode.OK, review);
-        // }
+             return Request.CreateResponse(HttpStatusCode.OK, review);
+         }
     }
 }
 
