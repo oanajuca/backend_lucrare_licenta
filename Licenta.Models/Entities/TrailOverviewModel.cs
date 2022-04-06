@@ -7,9 +7,10 @@ using System.Xml.Serialization;
 
 namespace Licenta.Models.Entities
 {
+    [XmlRoot("trailDescription")]
     public class TrailOverviewModel
     {
-        [XmlArray("")]
+        [XmlArray("description")]
         public List<DescriptionEntity> Descriptions { get; set; }
     }
 }
