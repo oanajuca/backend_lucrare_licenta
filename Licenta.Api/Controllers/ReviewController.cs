@@ -1,5 +1,6 @@
 ﻿using Licenta.Interfaces;
 using Licenta.Models.Dto;
+using Licenta.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,15 +44,15 @@ namespace Licenta.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, review);
         }
 
-       /* [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
-        [Route("add")]
-        public HttpResponseMessage GetTrailReview(string review)
+        [Route("add/{id}")]
+        public HttpResponseMessage AddReview(int id, [FromBody] AddReviewModel trailAddReviewEntity)
         {
-            var message = _repository.InsertReview(review);
+            var rev = _repository.AddReview(id, trailAddReviewEntity);
 
-            return Request.CreateResponse(HttpStatusCode.OK, message);
-        } */
+            return Request.CreateResponse(HttpStatusCode.OK, rev);
+        }
 
     }
 }

@@ -32,6 +32,7 @@ namespace Licenta.Interfaces
         UserEntity GetUserRev(int id);
         MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewEntity);
         MessageDto SaveTouristGuide(int trailId, TrailTouristGuideModel trailTouristGuideEntity);
+        MessageDto AddReview(int trailId, AddReviewModel trailAddReviewEntity);
     }
 }
 

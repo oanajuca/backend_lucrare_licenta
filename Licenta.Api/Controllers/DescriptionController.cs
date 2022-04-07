@@ -1,5 +1,6 @@
 ﻿using Licenta.Interfaces;
 using Licenta.Models.Dto;
+using Licenta.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,16 @@ namespace Licenta.Api.Controllers
             var description = _repository.GetTrailDescription(descriptionId);
 
             return Request.CreateResponse(HttpStatusCode.OK, description);
+        }
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpPost]
+        [Route("save/{id}")]
+        public HttpResponseMessage SaveOverview(int id, [FromBody] TrailOverviewModel trailOverviewEntity)
+        {
+            var desc= _repository.SaveOverview(id, trailOverviewEntity);
+
+            return Request.CreateResponse(HttpStatusCode.OK, desc);
         }
 
     }

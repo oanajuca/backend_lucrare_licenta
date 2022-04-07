@@ -7,13 +7,14 @@ using System.Xml.Serialization;
 
 namespace Licenta.Models.Entities
 {
-    [XmlRoot("review")]
-    public class ReviewModel
+    [XmlRoot("")]
+    public class AddReviewModel
     {
         [XmlElement("trailId")]
         public int TrailId { get; set; }
-        [XmlArray("review")]
-        public List<ReviewEntity> Review { get; set; }
+
+        [XmlArray("reviews")]
+        public List<ReviewEntity> Reviews { get; set; }
     }
 }
 

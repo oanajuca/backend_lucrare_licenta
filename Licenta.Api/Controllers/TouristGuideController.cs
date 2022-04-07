@@ -46,6 +46,7 @@ namespace Licenta.Api.Controllers
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("save/{id}")]
+       
         public HttpResponseMessage SaveTouristGuide(int id, [FromBody] TrailTouristGuideModel trailTouristGuideEntity)
         {
             var ghid = _repository.SaveTouristGuide(id, trailTouristGuideEntity);

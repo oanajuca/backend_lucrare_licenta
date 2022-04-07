@@ -420,7 +420,7 @@ namespace Licenta.Services.Implementations
             //_logger.Error(sb.ToString(), ex);
         }
 
-        public MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewModel)
+        public MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewEntity)
         {
             try
             {
@@ -430,7 +430,7 @@ namespace Licenta.Services.Implementations
 
                     if (trailDao != null)
                     {
-                        foreach (var descrip in trailOverviewModel.Descriptions)
+                        foreach (var descrip in trailOverviewEntity.Descriptions)
                         {
                             var existingOverview = licentaDataEntities.Descriptions.Where(a => a.Id == descrip.Id).FirstOrDefault();
 
@@ -444,6 +444,7 @@ namespace Licenta.Services.Implementations
                                     Equipment = descrip.Equipment,
                                     Indications = descrip.Indications,
                                     Observations = descrip.Observations,
+                                    TrailId = descrip.TrailId,
 
                                 };
 
@@ -457,6 +458,7 @@ namespace Licenta.Services.Implementations
                                 existingOverview.Equipment = descrip.Equipment;
                                 existingOverview.Indications = descrip.Indications;
                                 existingOverview.Observations = descrip.Observations;
+                                existingOverview.TrailId = descrip.TrailId;
 
 
                                 licentaDataEntities.SaveChanges();
@@ -550,6 +552,67 @@ namespace Licenta.Services.Implementations
             catch (Exception ex)
             {
                 _logger.Error("SaveTouristGuide failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+        }
+        public MessageDto AddReview(int trailId, AddReviewModel trailAddReviewEntity)
+        {
+            try
+            {
+                using (var licentaDataEntities = new licenta())
+                {
+                    var trailDao = licentaDataEntities.Trails.Where(a => a.Id == trailId).FirstOrDefault();
+
+                    if (trailDao != null)
+                    {
+                        foreach (var review in trailAddReviewEntity.Reviews)
+                        {
+                            var existingReview = licentaDataEntities.Reviews.Where(a => a.Id == review.Id).FirstOrDefault();
+                            var existingTrailReview = licentaDataEntities.TrailReviews.Where(a => a.ReviewId == review.Id && a.TrailId == trailId).FirstOrDefault();
+
+
+                            if (existingReview == null)
+                            {
+                                var newReview = new Review
+                                {
+                                    Id = review.Id,
+                                    Stars = review.Stars,
+                                    Comment = review.Comment,
+                                    UserId= review.UserId,
+
+
+                                };
+
+                                licentaDataEntities.Reviews.Add(newReview);
+                                licentaDataEntities.SaveChanges();
+                            
+                            var newTrailReviewToAdd = new TrailReview
+                            {
+                                TrailId = trailId,
+                                ReviewId = newReview.Id
+                            };
+
+                            licentaDataEntities.TrailReviews.Add(newTrailReviewToAdd);
+                            licentaDataEntities.SaveChanges();
+                            }
+                        }
+
+                        return new MessageDto { Category = Constants.Info, Description = "Review for trail: " + trailId + " is added." };
+                    }
+                    else
+                    {
+                        return new MessageDto { Category = Constants.Warn, Description = "Trail ID specified does not exist. Id: " + trailId };
+                    }
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("AddReview", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("AddReview failed in DatabaseRepository.cs. Error: ", ex);
                 return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
             }
         }

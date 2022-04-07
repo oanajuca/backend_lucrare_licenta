@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace Licenta.Models.Entities
 {
+    [XmlRoot("")]
     public class TrailTouristGuideModel
     {
         [XmlElement("trailId")]
