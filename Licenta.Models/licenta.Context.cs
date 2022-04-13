@@ -28,11 +28,10 @@ namespace Licenta.Models
         public virtual DbSet<Description> Descriptions { get; set; }
         public virtual DbSet<Difficulty> Difficulties { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
-        public virtual DbSet<TrailDifficulty> TrailDifficulties { get; set; }
-        public virtual DbSet<TrailReview> TrailReviews { get; set; }
-        public virtual DbSet<Trail> Trails { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<TouristGuide> TouristGuides { get; set; }
         public virtual DbSet<TouristGuideTrail> TouristGuideTrails { get; set; }
+        public virtual DbSet<TrailDifficulty> TrailDifficulties { get; set; }
+        public virtual DbSet<Trail> Trails { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

@@ -14,19 +14,13 @@ namespace Licenta.Models
     
     public partial class Review
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Review()
-        {
-            this.TrailReviews = new HashSet<TrailReview>();
-        }
-    
         public int Id { get; set; }
         public string Comment { get; set; }
         public double Stars { get; set; }
         public int UserId { get; set; }
+        public int TrailId { get; set; }
     
+        public virtual Trail Trail { get; set; }
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TrailReview> TrailReviews { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Licenta.Interfaces;
+﻿  
+using Licenta.Interfaces;
 using Licenta.Models;
 using Licenta.Infrastructure.Wrappers;
 using Licenta.Models.Entities;
@@ -231,20 +232,22 @@ namespace Licenta.Services.Implementations
         }
         public List<ReviewEntity> GetTrailReview(int trailId)
         {
-            var difficulty = new List<ReviewEntity>();
+            var revie = new List<ReviewEntity>();
 
             using (var licentaDataEntities = new licenta())
             {
-                var rev = licentaDataEntities.TrailReviews
-                    .Join(licentaDataEntities.Reviews, u => u.ReviewId, t => t.Id, (u, t) => new { u, t })
-                    .Join(licentaDataEntities.Trails, ct => ct.u.TrailId, c => c.Id, (ct, c) => new { ct, c })
-                    .Where(a => a.ct.u.TrailId == trailId)
+                var rev = licentaDataEntities.Reviews
+                    .Join(licentaDataEntities.Trails, u => u.TrailId, t => t.Id, (u, t) => new { u, t })
+                   // .Join(licentaDataEntities.Trails, ct => ct.u.TrailId, c => c.Id, (ct, c) => new { ct, c })
+                    .Where(a => a.u.TrailId == trailId)
                     .Select(a => new ReviewEntity
                     {
-                        Id = a.ct.u.ReviewId,
-                        Comment = a.ct.u.Review.Comment,
-                        Stars = a.ct.u.Review.Stars,
-                        UserId = a.ct.u.Review.UserId,
+                       Id= a.u.Id,
+                       Comment=a.u.Comment,
+                       Stars = a.u.Stars,
+                       UserId = a.u.UserId,
+                       TrailId = a.u.TrailId,
+
                     }).ToList();
 
                 return rev;
@@ -383,14 +386,10 @@ namespace Licenta.Services.Implementations
                          {
                            Id = 
                          };
-
                          licentaDataEntities.Reviews.Add(rev);
                          licentaDataEntities.SaveChanges();
                          return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Review inserted successfully." };
-
-
                  }
-
              }
              catch (DbEntityValidationException ex)
              {
@@ -503,15 +502,15 @@ namespace Licenta.Services.Implementations
                             {
                                 var newGuide = new TouristGuide
                                 {
-                                    Deviation= guide.Deviation,
-                                    Camping= guide.Camping,
-                                    Discover= guide.Discover,
-                                    Environment= guide.Environment,
-                                    Fire= guide.Fire,
-                                    Garbage= guide.Garbage,
-                                    Noise= guide.Noise,
-                                    Promote= guide.Promote,
-                                    Rules= guide.Rules,
+                                    Deviation = guide.Deviation,
+                                    Camping = guide.Camping,
+                                    Discover = guide.Discover,
+                                    Environment = guide.Environment,
+                                    Fire = guide.Fire,
+                                    Garbage = guide.Garbage,
+                                    Noise = guide.Noise,
+                                    Promote = guide.Promote,
+                                    Rules = guide.Rules,
 
 
                                 };
@@ -524,7 +523,7 @@ namespace Licenta.Services.Implementations
                                 existingGuide.Deviation = guide.Deviation;
                                 existingGuide.Camping = guide.Camping;
                                 existingGuide.Discover = guide.Discover;
-                                existingGuide.Environment = guide.Environment; 
+                                existingGuide.Environment = guide.Environment;
                                 existingGuide.Fire = guide.Fire;
                                 existingGuide.Garbage = guide.Garbage;
                                 existingGuide.Noise = guide.Noise;
@@ -555,65 +554,43 @@ namespace Licenta.Services.Implementations
                 return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
             }
         }
-        public MessageDto AddReview(int trailId, AddReviewModel trailAddReviewEntity)
+        public MessageDto CreateReview(string comment, int stars, int userid,int trailid)
         {
             try
             {
-                using (var licentaDataEntities = new licenta())
+                var existingReviews = GetReview();
+                if (!existingReviews.Any(a => a.Comment == comment))
                 {
-                    var trailDao = licentaDataEntities.Trails.Where(a => a.Id == trailId).FirstOrDefault();
-
-                    if (trailDao != null)
+                    using (var licentaDataEntities = new licenta())
                     {
-                        foreach (var review in trailAddReviewEntity.Reviews)
+                        var reviewDao = new Review
                         {
-                            var existingReview = licentaDataEntities.Reviews.Where(a => a.Id == review.Id).FirstOrDefault();
-                            var existingTrailReview = licentaDataEntities.TrailReviews.Where(a => a.ReviewId == review.Id && a.TrailId == trailId).FirstOrDefault();
+                           Comment = comment,
+                           Stars = stars,
+                           UserId = userid,
+                           TrailId = trailid
+                        };
 
-
-                            if (existingReview == null)
-                            {
-                                var newReview = new Review
-                                {
-                                    Id = review.Id,
-                                    Stars = review.Stars,
-                                    Comment = review.Comment,
-                                    UserId= review.UserId,
-
-
-                                };
-
-                                licentaDataEntities.Reviews.Add(newReview);
-                                licentaDataEntities.SaveChanges();
-                            
-                            var newTrailReviewToAdd = new TrailReview
-                            {
-                                TrailId = trailId,
-                                ReviewId = newReview.Id
-                            };
-
-                            licentaDataEntities.TrailReviews.Add(newTrailReviewToAdd);
-                            licentaDataEntities.SaveChanges();
-                            }
-                        }
-
-                        return new MessageDto { Category = Constants.Info, Description = "Review for trail: " + trailId + " is added." };
+                        licentaDataEntities.Reviews.Add(reviewDao);
+                        licentaDataEntities.SaveChanges();
                     }
-                    else
-                    {
-                        return new MessageDto { Category = Constants.Warn, Description = "Trail ID specified does not exist. Id: " + trailId };
-                    }
+
+                    return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Review added successfully." };
+                }
+                else
+                {
+                    return new MessageDto { Category = Infrastructure.Wrappers.Constants.Warn, Description = "Review with comment: " + comment + " already exists in DB." };
                 }
             }
             catch (DbEntityValidationException ex)
             {
-                HandleDbEntityValiddationException("AddReview", ex);
-                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+                HandleDbEntityValiddationException("CreateReview", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
             }
             catch (Exception ex)
             {
-                _logger.Error("AddReview failed in DatabaseRepository.cs. Error: ", ex);
-                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+                _logger.Error("CreateReview failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
             }
         }
 

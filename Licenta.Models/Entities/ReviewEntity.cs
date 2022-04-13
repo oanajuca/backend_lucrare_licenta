@@ -12,5 +12,6 @@ namespace Licenta.Models.Entities
         public string Comment { get; set; }
         public double Stars { get; set; }
         public int UserId { get; set; }
+        public int TrailId { get; set; }
     }
 }

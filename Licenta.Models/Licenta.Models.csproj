@@ -111,9 +111,6 @@
     <Compile Include="TrailDifficulty.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
-    <Compile Include="TrailReview.cs">
-      <DependentUpon>licenta.tt</DependentUpon>
-    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>

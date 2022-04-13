@@ -192,6 +192,7 @@ namespace Licenta.Services.Implementations
                 Stars = reviewDao.Stars,
                 Comment = reviewDao.Comment,
                 UserId = reviewDao.UserId,
+                TrailId= (int)reviewDao.TrailId,
                 
             };
 

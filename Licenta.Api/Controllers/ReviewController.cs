@@ -46,12 +46,16 @@ namespace Licenta.Api.Controllers
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
-        [Route("add/{id}")]
-        public HttpResponseMessage AddReview(int id, [FromBody] AddReviewModel trailAddReviewEntity)
+        [Route("addreview")]
+        public HttpResponseMessage AddReview(string comment,int stars, int userid, int trailid)
         {
-            var rev = _repository.AddReview(id, trailAddReviewEntity);
+            var response = _repository.CreateReview(comment, stars, userid, trailid);
 
-            return Request.CreateResponse(HttpStatusCode.OK, rev);
+            if (response.Category == Infrastructure.Wrappers.Constants.Info)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            return Request.CreateResponse(HttpStatusCode.Forbidden, response);
         }
 
     }
