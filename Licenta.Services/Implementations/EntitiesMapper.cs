@@ -76,7 +76,8 @@ namespace Licenta.Services.Implementations
                 Location = trailDao.Location,
                 Distance = trailDao.Distance,
                 Time = trailDao.Time,
-                Mark = trailDao.Mark
+                Mark = trailDao.Mark,
+                Map = trailDao.Map
             };
 
             return trail;

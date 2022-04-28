@@ -15,6 +15,7 @@ namespace Licenta.Models.Entities
         public string Distance { get; set; }
         public string Time { get; set; }
         public string Mark { get; set; }
+        public string Map { get; set; }
         public List<DifficultyEntity> TrailDifficulty { get; set; }
         public List<DescriptionEntity> Description { get; set; }
         public List<ReviewEntity> TrailReview { get; set; }

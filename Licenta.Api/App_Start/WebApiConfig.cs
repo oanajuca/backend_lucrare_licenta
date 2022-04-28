@@ -12,7 +12,7 @@ namespace Licenta.Api
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
-        {
+        { 
             // Web API configuration and services
             var container = new UnityContainer();
             container.RegisterType<IMapper, EntitiesMapper>();
@@ -21,7 +21,7 @@ namespace Licenta.Api
             container.RegisterType<IPasswordManager, PasswordManager>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
-
+            config.EnableCors();
             // Web API routes
             config.MapHttpAttributeRoutes();
 

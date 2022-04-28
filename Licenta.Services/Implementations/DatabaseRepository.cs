@@ -593,6 +593,41 @@ namespace Licenta.Services.Implementations
                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
             }
         }
+        public MessageDto DeleteReview(int reviewId)
+        {
+            try
+            {
+                var commentToBeDeleted = "";
+                using (var licentaDataEntities = new licenta())
+                {
+                    var reviewDao = licentaDataEntities.Reviews.FirstOrDefault(a => a.Id == reviewId);
+                   ;
+
+                   
+
+                    if (reviewDao != null)
+                    {
+                        commentToBeDeleted = reviewDao.Comment;
+                        licentaDataEntities.Reviews.Remove(reviewDao);
+                        
+
+                        licentaDataEntities.SaveChanges();
+                    }
+                }
+
+                return new MessageDto { Category = Constants.Info, Description = "Review with Id: " + reviewId + " and Comment: " + commentToBeDeleted + " was deleted." };
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("DeleteReview", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("DeleteReview failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+        }
 
     }
 

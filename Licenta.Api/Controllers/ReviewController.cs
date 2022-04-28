@@ -57,6 +57,15 @@ namespace Licenta.Api.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.Forbidden, response);
         }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpDelete]
+        [Route("delete/{id}")]
+        public HttpResponseMessage DeleteReview(int id)
+        {
+            var response = _repository.DeleteReview(id);
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
 
     }
 }

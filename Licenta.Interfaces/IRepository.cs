@@ -33,6 +33,7 @@ namespace Licenta.Interfaces
         MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewEntity);
         MessageDto SaveTouristGuide(int trailId, TrailTouristGuideModel trailTouristGuideEntity);
         MessageDto CreateReview(string comment, int stars, int userid, int trailid);
+        MessageDto DeleteReview(int id);
     }
 }
 

@@ -30,6 +30,7 @@ namespace Licenta.Models
         public string Distance { get; set; }
         public string Time { get; set; }
         public string Mark { get; set; }
+        public string Map { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Description> Descriptions { get; set; }
