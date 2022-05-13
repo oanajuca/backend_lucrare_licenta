@@ -11,8 +11,6 @@ namespace Licenta.Interfaces
 
         IEnumerable<TrailsEntity> Convert(IEnumerable<Trail> trailsDao);
         TrailsEntity Convert(Trail trail);
-        IEnumerable<DifficultyEntity> Convert(IEnumerable<Difficulty> difficultyDao);
-        DifficultyEntity Convert(Difficulty difficulty);
         IEnumerable<DescriptionEntity> Convert(IEnumerable<Description> descriptionDao);
         DescriptionEntity Convert(Description description);
         IEnumerable<ReviewEntity> Convert(IEnumerable<Review> reviewDao);

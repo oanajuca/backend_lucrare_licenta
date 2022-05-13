@@ -4,22 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b1e97deb50b84bab8c62bdac625f6f39" Name="Diagram1">
-        <EntityTypeShape EntityType="licentaModel.Description" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.Difficulty" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.Review" Width="1.5" PointX="6" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.TouristGuide" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.TouristGuideTrail" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.TrailDifficulty" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.Trail" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="licentaModel.User" Width="1.5" PointX="3.75" PointY="13.625" IsExpanded="true" />
+      <Diagram DiagramId="cb4be0dfb8994c64b3aadde3708b115e" Name="Diagram1">
+        <EntityTypeShape EntityType="licentaModel.Description" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="licentaModel.Review" Width="1.5" PointX="6" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="licentaModel.TouristGuide" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="licentaModel.Trail" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="licentaModel.TrailTouristGuide" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="licentaModel.User" Width="1.5" PointX="3.75" PointY="9" IsExpanded="true" />
         <AssociationConnector Association="licentaModel.FK_TrailDescription_Description" ManuallyRouted="false" />
-        <AssociationConnector Association="licentaModel.FK_TrailDifficulty_Review" ManuallyRouted="false" />
         <AssociationConnector Association="licentaModel.FK_Review_Trail" ManuallyRouted="false" />
         <AssociationConnector Association="licentaModel.FK_Review_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="licentaModel.FK_TouristGuideTrails_TouristGuide" ManuallyRouted="false" />
+        <AssociationConnector Association="licentaModel.FK_TrailTouristGuide_TouristGuide" ManuallyRouted="false" />
         <AssociationConnector Association="licentaModel.FK_TrailTouristGuide_Trail" ManuallyRouted="false" />
-        <AssociationConnector Association="licentaModel.FK_TrailDifficulty_Trail" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

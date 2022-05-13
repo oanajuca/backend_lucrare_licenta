@@ -12,13 +12,13 @@ namespace Licenta.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TrailDifficulty
+    public partial class TrailTouristGuide
     {
         public int Id { get; set; }
         public int TrailId { get; set; }
-        public int DifficultyId { get; set; }
+        public int TouristGuideId { get; set; }
     
-        public virtual Difficulty Difficulty { get; set; }
+        public virtual TouristGuide TouristGuide { get; set; }
         public virtual Trail Trail { get; set; }
     }
 }

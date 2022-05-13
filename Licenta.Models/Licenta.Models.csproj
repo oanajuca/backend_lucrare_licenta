@@ -67,14 +67,10 @@
     <Compile Include="Description.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
-    <Compile Include="Difficulty.cs">
-      <DependentUpon>licenta.tt</DependentUpon>
-    </Compile>
     <Compile Include="Dto\MessageDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Entities\AddReviewModel.cs" />
     <Compile Include="Entities\DescriptionEntity.cs" />
-    <Compile Include="Entities\DifficultyEntity.cs" />
     <Compile Include="Entities\ReviewEntity.cs" />
     <Compile Include="Entities\TouristGuideEntity.cs" />
     <Compile Include="Entities\TrailOverviewModel.cs" />
@@ -102,13 +98,10 @@
     <Compile Include="TouristGuide.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
-    <Compile Include="TouristGuideTrail.cs">
-      <DependentUpon>licenta.tt</DependentUpon>
-    </Compile>
     <Compile Include="Trail.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
-    <Compile Include="TrailDifficulty.cs">
+    <Compile Include="TrailTouristGuide.cs">
       <DependentUpon>licenta.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">

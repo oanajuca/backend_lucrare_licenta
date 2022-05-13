@@ -34,15 +34,7 @@ namespace Licenta.Api.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, guide);
         }
-        [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [HttpGet]
-        [Route("trail/{trailId}")]
-        public HttpResponseMessage GetTrailTouristGuide(int trailId)
-        {
-            var guide = _repository.GetTrailTouristGuide(trailId);
-
-            return Request.CreateResponse(HttpStatusCode.OK, guide);
-        }
+       
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost]
         [Route("save/{id}")]

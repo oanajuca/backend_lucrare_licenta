@@ -17,7 +17,7 @@ namespace Licenta.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TouristGuide()
         {
-            this.TouristGuideTrails = new HashSet<TouristGuideTrail>();
+            this.TrailTouristGuides = new HashSet<TrailTouristGuide>();
         }
     
         public int Id { get; set; }
@@ -32,6 +32,6 @@ namespace Licenta.Models
         public string Garbage { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TouristGuideTrail> TouristGuideTrails { get; set; }
+        public virtual ICollection<TrailTouristGuide> TrailTouristGuides { get; set; }
     }
 }

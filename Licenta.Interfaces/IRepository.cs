@@ -12,7 +12,6 @@ namespace Licenta.Interfaces
     {
         IEnumerable<TrailsEntity> GetTrail();
         IEnumerable<DescriptionEntity> GetDescription();
-        IEnumerable<DifficultyEntity> GetDifficulty();
         IEnumerable<ReviewEntity> GetReview();
         IEnumerable<UserEntity> GetUserRev();
         IEnumerable<TouristGuideEntity> GetGuide();
@@ -21,19 +20,18 @@ namespace Licenta.Interfaces
         void UpdateUserPassword(UserDto user);
         TrailsEntity GetTrail(int id);
         DescriptionEntity GetDescription(int id);
-        List<DifficultyEntity> GetTrailDifficulty(int difficultyId);
         List<DescriptionEntity> GetTrailDescription(int descriptionId);
         List<ReviewEntity> GetTrailReview(int trailId);
         List<ReviewEntity> GetUserReview(int reviewId);
-        List<TouristGuideEntity> GetTrailTouristGuide(int trailId);
         MessageDto CreateUser(string firstname,string lastname,string username, string email, string role, string password);
-      
-         List<ReviewEntity> GetReviewUser(int userId);
+        List<TouristGuideEntity> GetTrailTouristGuide(int trailId);
+        List<ReviewEntity> GetReviewUser(int userId);
         UserEntity GetUserRev(int id);
         MessageDto SaveOverview(int trailId, TrailOverviewModel trailOverviewEntity);
         MessageDto SaveTouristGuide(int trailId, TrailTouristGuideModel trailTouristGuideEntity);
         MessageDto CreateReview(string comment, int stars, int userid, int trailid);
         MessageDto DeleteReview(int id);
+        MessageDto CreateTrail(string name, string location, string distance, string time, string mark, string map, string difficulty);
     }
 }
 

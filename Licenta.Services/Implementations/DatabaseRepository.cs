@@ -44,17 +44,7 @@ namespace Licenta.Services.Implementations
                 return description;
             }
         }
-        public IEnumerable<DifficultyEntity> GetDifficulty()
-        {
-            using (var licentaDataEntities = new licenta())
-            {
-                var difficultyDao = licentaDataEntities.Difficulties;
-
-                var difficulty = _mapper.Convert(difficultyDao);
-
-                return difficulty;
-            }
-        }
+       
         public IEnumerable<ReviewEntity> GetReview()
         {
             using (var licentaDataEntities = new licenta())
@@ -142,6 +132,7 @@ namespace Licenta.Services.Implementations
                 return null;
             }
         }
+      
         public List<DescriptionEntity> GetTrailDescription(int descriptionId)
         {
             using (var licentaDataEntities = new licenta())
@@ -164,52 +155,13 @@ namespace Licenta.Services.Implementations
                 return desc;
             }
         }
-        public List<ReviewEntity> GetUserReview(int reviewId)
-        {
-            using (var licentaDataEntities = new licenta())
-            {
-                var revi = licentaDataEntities.Reviews
-                    .Join(licentaDataEntities.Users, p => p.UserId, pr => pr.Id, (p, pr) => new { p, pr })
-                    .Where(a => a.p.UserId == reviewId)
-                    .Select(a => new ReviewEntity
-                    {
-                        Id = a.p.UserId,
-                        Comment = a.p.Comment,
-                        Stars = a.p.Stars,
-                        UserId = a.p.UserId,
-                    }).ToList();
-
-                return revi;
-            }
-        }
-
-        public List<DifficultyEntity> GetTrailDifficulty(int trailId)
-        {
-            var difficulty = new List<DifficultyEntity>();
-
-            using (var licentaDataEntities = new licenta())
-            {
-                var diff = licentaDataEntities.TrailDifficulties
-                    .Join(licentaDataEntities.Difficulties, u => u.DifficultyId, t => t.Id, (u, t) => new { u, t })
-                    .Join(licentaDataEntities.Trails, ct => ct.u.TrailId, c => c.Id, (ct, c) => new { ct, c })
-                    .Where(a => a.ct.u.TrailId == trailId)
-                    .Select(a => new DifficultyEntity
-                    {
-                        Id = a.ct.u.Difficulty.Id,
-                        Description = a.ct.u.Difficulty.Description,
-
-                    }).ToList();
-
-                return diff;
-            }
-        }
         public List<TouristGuideEntity> GetTrailTouristGuide(int trailId)
         {
             var guides = new List<TouristGuideEntity>();
 
             using (var licentaDataEntities = new licenta())
             {
-                var diff = licentaDataEntities.TouristGuideTrails
+                var diff = licentaDataEntities.TrailTouristGuides
                     .Join(licentaDataEntities.TouristGuides, u => u.TouristGuideId, t => t.Id, (u, t) => new { u, t })
                     .Join(licentaDataEntities.Trails, ct => ct.u.TrailId, c => c.Id, (ct, c) => new { ct, c })
                     .Where(a => a.ct.u.TrailId == trailId)
@@ -230,6 +182,26 @@ namespace Licenta.Services.Implementations
                 return diff;
             }
         }
+        public List<ReviewEntity> GetUserReview(int reviewId)
+        {
+            using (var licentaDataEntities = new licenta())
+            {
+                var revi = licentaDataEntities.Reviews
+                    .Join(licentaDataEntities.Users, p => p.UserId, pr => pr.Id, (p, pr) => new { p, pr })
+                    .Where(a => a.p.UserId == reviewId)
+                    .Select(a => new ReviewEntity
+                    {
+                        Id = a.p.UserId,
+                        Comment = a.p.Comment,
+                        Stars = a.p.Stars,
+                        UserId = a.p.UserId,
+                    }).ToList();
+
+                return revi;
+            }
+        }
+        
+
         public List<ReviewEntity> GetTrailReview(int trailId)
         {
             var revie = new List<ReviewEntity>();
@@ -376,32 +348,7 @@ namespace Licenta.Services.Implementations
                 licentaDataEntities.SaveChanges();
             }
         }
-        /* public MessageDto InsertReview(string id, string stars, string comment)
-         {
-             try
-             {
-                 using (var licentaDataEntities = new licenta())
-                 {
-                         var rev = new Review
-                         {
-                           Id = 
-                         };
-                         licentaDataEntities.Reviews.Add(rev);
-                         licentaDataEntities.SaveChanges();
-                         return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Review inserted successfully." };
-                 }
-             }
-             catch (DbEntityValidationException ex)
-             {
-                 HandleDbEntityValiddationException("InsertReview", ex);
-                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
-             }
-             catch (Exception ex)
-             {
-                 _logger.Error("InsertReview failed in DatabaseRepository.cs. Error: ", ex);
-                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
-             }
-         } */
+       
 
         private void HandleDbEntityValiddationException(string methodOfOcuring, DbEntityValidationException ex)
         {
@@ -626,6 +573,50 @@ namespace Licenta.Services.Implementations
             {
                 _logger.Error("DeleteReview failed in DatabaseRepository.cs. Error: ", ex);
                 return new MessageDto { Category = Constants.Error, Description = ex.ToString() };
+            }
+        }
+        public MessageDto CreateTrail(string name, string location, string distance, string time, string mark, string map, string difficulty)
+        {
+            try
+            {
+                var existingTrails = GetTrail();
+                if (!existingTrails.Any(a => a.Name == name))
+                {
+                    using (var licentaDataEntities = new licenta())
+                    {
+                        var trailDao = new Trail
+                        {
+                            Name = name,
+                            Location = location,
+                            Distance = distance,
+                            Time = time,
+                            Mark = mark,
+                            Map = map,
+                            Difficulty = difficulty,
+                        };
+
+                        licentaDataEntities.Trails.Add(trailDao);
+                        licentaDataEntities.SaveChanges();
+
+                        
+                    }
+
+                    return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Trail created successfully." };
+                }
+                else
+                {
+                    return new MessageDto { Category = Infrastructure.Wrappers.Constants.Warn, Description = "Trail with name: " + name + " already exists in DB." };
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("CreateTrail", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CreateUser failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
             }
         }
 

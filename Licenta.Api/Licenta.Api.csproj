@@ -203,7 +203,6 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DescriptionController.cs" />
-    <Compile Include="Controllers\DifficultyController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\TouristGuideController.cs" />
     <Compile Include="Controllers\TrailController.cs" />

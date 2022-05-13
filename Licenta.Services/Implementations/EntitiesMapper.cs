@@ -72,12 +72,13 @@ namespace Licenta.Services.Implementations
             {
                 Id = trailDao.Id,
                 Name = trailDao.Name,
-                ShortDescription = trailDao.ShortDescription,
                 Location = trailDao.Location,
                 Distance = trailDao.Distance,
                 Time = trailDao.Time,
                 Mark = trailDao.Mark,
-                Map = trailDao.Map
+                Map = trailDao.Map,
+                Difficulty= trailDao.Difficulty,
+
             };
 
             return trail;
@@ -115,31 +116,7 @@ namespace Licenta.Services.Implementations
             return guide;
         }
 
-        public IEnumerable<DifficultyEntity> Convert(IEnumerable<Difficulty> difficultyDao)
-        {
-            {
-                var difficulties = new List<DifficultyEntity>();
-
-                foreach (var item in difficultyDao)
-                {
-                    difficulties.Add(Convert(item));
-                }
-
-                return difficulties;
-            }
-        }
-
-        public DifficultyEntity Convert(Difficulty difficultyDao)
-        {
-            var difficulty = new DifficultyEntity
-            {
-                Id = difficultyDao.Id,
-                Description = difficultyDao.Description,
-              
-            };
-
-            return difficulty;
-        }
+       
 
         public IEnumerable<DescriptionEntity> Convert(IEnumerable<Description> descriptionDao)
         {

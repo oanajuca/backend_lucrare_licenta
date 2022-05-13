@@ -19,26 +19,23 @@ namespace Licenta.Models
         {
             this.Descriptions = new HashSet<Description>();
             this.Reviews = new HashSet<Review>();
-            this.TouristGuideTrails = new HashSet<TouristGuideTrail>();
-            this.TrailDifficulties = new HashSet<TrailDifficulty>();
+            this.TrailTouristGuides = new HashSet<TrailTouristGuide>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ShortDescription { get; set; }
         public string Location { get; set; }
         public string Distance { get; set; }
         public string Time { get; set; }
         public string Mark { get; set; }
         public string Map { get; set; }
+        public string Difficulty { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Description> Descriptions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TouristGuideTrail> TouristGuideTrails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TrailDifficulty> TrailDifficulties { get; set; }
+        public virtual ICollection<TrailTouristGuide> TrailTouristGuides { get; set; }
     }
 }
