@@ -2,6 +2,7 @@
 using Licenta.Models.Dto;
 using Licenta.Models.Entities;
 using System;
+using Licenta.Infrastructure.Wrappers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -45,5 +46,19 @@ namespace Licenta.Api.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, ghid);
         }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpPost]
+        [Route("addnewguide")]
+        public HttpResponseMessage NewTrailGuide(int trailid, int guideid)
+        {
+            var response = _repository.CreateTrailGuide(trailid,guideid);
+
+            if (response.Category == Constants.Info)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            return Request.CreateResponse(HttpStatusCode.Forbidden, response);
+        }
+
     }
 }

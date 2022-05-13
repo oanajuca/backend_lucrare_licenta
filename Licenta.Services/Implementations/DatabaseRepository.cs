@@ -615,7 +615,84 @@ namespace Licenta.Services.Implementations
             }
             catch (Exception ex)
             {
-                _logger.Error("CreateUser failed in DatabaseRepository.cs. Error: ", ex);
+                _logger.Error("CreateTrail failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+            }
+        }
+        public MessageDto CreateTrailDescription(string steps, string indications, string equipment, string observations, int trailid, string shortdescription)
+        {
+            try
+            {
+                var existingDetails = GetDescription();
+                if (!existingDetails.Any(a => a.TrailId == trailid))
+                {
+                    using (var licentaDataEntities = new licenta())
+                    {
+                        var descriptionDao = new Description
+                        {
+                            Steps = steps,
+                            Indications = indications,
+                            Equipment = equipment,
+                            Observations = observations,
+                            TrailId = trailid,
+                            ShortDescription = shortdescription
+                        };
+
+                        licentaDataEntities.Descriptions.Add(descriptionDao);
+                        licentaDataEntities.SaveChanges();
+
+
+                    }
+
+                    return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Description created successfully." };
+                }
+                else
+                {
+                    return new MessageDto { Category = Infrastructure.Wrappers.Constants.Warn, Description = "Description for: " + trailid + " already exists in DB." };
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("CreateTrailDescription", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CreatetrailDescription failed in DatabaseRepository.cs. Error: ", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+            }
+        }
+        public MessageDto CreateTrailGuide( int trailid, int guideid)
+        {
+            try
+            {
+
+                using (var licentaDataEntities = new licenta())
+                {
+                    var guideDao = new TrailTouristGuide
+                    {
+                        TrailId = trailid,
+                        TouristGuideId = guideid
+                    };
+
+                    licentaDataEntities.TrailTouristGuides.Add(guideDao);
+                    licentaDataEntities.SaveChanges();
+
+
+                }
+
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Info, Description = "Guide created successfully." };
+                
+               
+            }
+            catch (DbEntityValidationException ex)
+            {
+                HandleDbEntityValiddationException("CreateTrailGuide", ex);
+                return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CreatetrailGuide failed in DatabaseRepository.cs. Error: ", ex);
                 return new MessageDto { Category = Infrastructure.Wrappers.Constants.Error, Description = ex.ToString() };
             }
         }

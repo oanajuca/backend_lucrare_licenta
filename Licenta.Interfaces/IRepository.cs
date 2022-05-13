@@ -32,6 +32,8 @@ namespace Licenta.Interfaces
         MessageDto CreateReview(string comment, int stars, int userid, int trailid);
         MessageDto DeleteReview(int id);
         MessageDto CreateTrail(string name, string location, string distance, string time, string mark, string map, string difficulty);
+        MessageDto CreateTrailDescription(string steps, string indications, string equipment, string observations, int trailid, string shortdescription);
+        MessageDto CreateTrailGuide(int trailid, int guideid);
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using Licenta.Interfaces;
 using Licenta.Models.Dto;
 using Licenta.Models.Entities;
+using Licenta.Infrastructure.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,19 @@ namespace Licenta.Api.Controllers
             var desc= _repository.SaveOverview(id, trailOverviewEntity);
 
             return Request.CreateResponse(HttpStatusCode.OK, desc);
+        }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpPost]
+        [Route("adddescription")]
+        public HttpResponseMessage NewDescription(string steps, string indications, string equipment, string observations, int trailid, string shortdescription)
+        {
+            var response = _repository.CreateTrailDescription( steps, indications, equipment, observations, trailid,shortdescription);
+
+            if (response.Category == Constants.Info)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            return Request.CreateResponse(HttpStatusCode.Forbidden, response);
         }
 
     }
